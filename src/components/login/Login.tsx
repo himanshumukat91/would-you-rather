@@ -6,6 +6,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
 import './Login.css';
 
 import { setCurrentUser } from '../../actions/user';
@@ -47,9 +48,12 @@ class Login extends PureComponent<Props, State> {
     render() {
         const { users } = this.props;
         const { selectedUser } = this.state;
+        const usernames = Object.keys(users);
         return (
             <div className='loginContainer'>
-                <div className='loginHeading'>{'Tell us who you are'}</div>
+                <Typography variant="h5">
+                    TELL US WHO YOU ARE
+                </Typography>
                 <FormControl className='loginSelect'>
                     <InputLabel id="demo-simple-select-label"></InputLabel>
                     <Select
@@ -58,8 +62,10 @@ class Login extends PureComponent<Props, State> {
                     value={selectedUser}
                     onChange={this.selectUser}
                     >   
-                        {(users || []).map(user => (
-                            <MenuItem value={user.name}>{user.name}</MenuItem>
+                        {(usernames || []).map(username => (
+                            <MenuItem key={username} value={username}>
+                                {username}
+                            </MenuItem>
                         ))}
                     </Select>
                 </FormControl>

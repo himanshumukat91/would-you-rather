@@ -1,11 +1,10 @@
-import {SET_CURRENT_USER} from '../actions/user';
+import { SET_CURRENT_USER, QUESTION_POSTED, ANSWER_POSTED } from '../actions/user';
 
 interface userDetails {
-    name: string;
-    questionsPosted: number;
-    questionsAnswered: number;
-    answers: answer;
-    questionIds: string[];
+    answeredQuestions: number;
+    postedQuestions: number;
+    answeredQuestionIds: string[];
+    postedQuestionIds: string[];
 }
 
 interface Action {
@@ -13,40 +12,48 @@ interface Action {
   result?: any;
 };
 
-interface answer {
-    [key: string]: number;
+interface UserDetailsProps {
+    [key: string]: userDetails
 }
-
 interface InitialState {
     currentUser: string;
-    users: userDetails[]
+    users: UserDetailsProps
 };
 
 const initialState: InitialState = {
     currentUser: '',
-    users: [
-        {
-            name: 'Undertaker',
-            questionsPosted: 0,
-            questionsAnswered: 0,
-            answers: {},
-            questionIds: [''],
+    users: {
+        'Undertaker': {
+            answeredQuestions: 0,
+            postedQuestions: 0,
+            answeredQuestionIds: [],
+            postedQuestionIds: [],
         },
-        {
-            name: 'Brock Lesnar',
-            questionsPosted: 0,
-            questionsAnswered: 0,
-            answers: {},
-            questionIds: [''],
+        'Brock': {
+            answeredQuestions: 0,
+            postedQuestions: 0,
+            answeredQuestionIds: [],
+            postedQuestionIds: [],
         },
-        {
-            name: 'Rock',
-            questionsPosted: 0,
-            questionsAnswered: 0,
-            answers: {},
-            questionIds: [''],
+        'Austin': {
+            answeredQuestions: 0,
+            postedQuestions: 0,
+            answeredQuestionIds: [],
+            postedQuestionIds: [],
+        },
+        'Cena': {
+            answeredQuestions: 0,
+            postedQuestions: 0,
+            answeredQuestionIds: [],
+            postedQuestionIds: [],
+        },
+        'Rock': {
+            answeredQuestions: 0,
+            postedQuestions: 0,
+            answeredQuestionIds: [],
+            postedQuestionIds: [],
         }
-    ]
+    }
 };
 
 export default function reducer(
@@ -59,7 +66,27 @@ export default function reducer(
           ...state,
           currentUser: action.result,
         }; 
-    default:
-        return state;
+        case QUESTION_POSTED: {
+            let users = {...state.users};
+            let userDetails = users[action.result.username];
+            userDetails.postedQuestions++;
+            userDetails.postedQuestionIds.push(action.result.questionId);
+            return {
+                ...state,
+                users,
+            }; 
+        }
+        case ANSWER_POSTED: {
+            let users = {...state.users};
+            let userDetails = users[action.result.username];
+            userDetails.answeredQuestions++;
+            userDetails.answeredQuestionIds.push(action.result.questionId);
+            return {
+                ...state,
+                users,
+            }; 
+        }
+        default:
+            return state;
     }
 }
