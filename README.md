@@ -2,9 +2,11 @@
 
 This is a project done for Udacity React Nano Degree mentor/reviewer certification 
 
+
 ## Installing the app
 Go to the root folder of the app and run:
 ### `npm install`
+
 
 ## Running the app
 Go to the root folder of the app and run:
@@ -13,6 +15,7 @@ Go to the root folder of the app and run:
 Runs the app in the development mode.<br>
 A new browser window should automatically open displaying the app.  
 If it doesn't, navigate to [http://localhost:3000/](http://localhost:3000/) in your browser
+
 
 ## App folder structure
 
