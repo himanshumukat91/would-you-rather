@@ -1,10 +1,13 @@
 import { SAVE_ANSWER, SAVE_NEW_QUESTION } from '../actions/questions';
 
 interface questionDetails {
+    id: string;
     option1: string;
     option2: string;
     option1VotedUsers: string[];
     option2VotedUsers: string[];
+    author: string;
+    authorProfile: string;
 }
 
 interface Action {
@@ -12,47 +15,58 @@ interface Action {
   result?: any;
 };
 
-interface questionDetailsProps {
-    [key: string]: questionDetails
-}
-
 interface InitialState {
-    questions: questionDetailsProps;
+    questions: questionDetails[];
 };
 
 const initialState: InitialState = {
-    questions: {
-        '4qbl54shl': {   
+    questions: [
+        {   
+            id: '4qbl54shl',
             option1: 'Be a Superhero',
             option2: 'Be a SuperVillain',
-            option1VotedUsers: ['Rock', 'Cena'],
+            option1VotedUsers: ['Cena'],
             option2VotedUsers: ['Undertaker', 'Brock'],
+            author: 'Undertaker',
+            authorProfile: 'https://i.picsum.photos/id/201/100/100.jpg',
         },
-        '5l584cwfu': {   
+        {   
+            id: '5l584cwfu',
             option1: 'Be a Whale',
             option2: 'Be an Elephant',
             option1VotedUsers: ['Brock'],
             option2VotedUsers: ['Cena', 'Rock'],
+            author: 'Brock',
+            authorProfile: 'https://i.picsum.photos/id/202/100/100.jpg',
         },
-        '2psqkh63k': {   
+        {   
+            id: '2psqkh63k',
             option1: 'Be a Star',
             option2: 'Be a Planet',
             option1VotedUsers: ['Austin', 'Brock'],
             option2VotedUsers: ['Undertaker'],
+            author: 'Austin',
+            authorProfile: 'https://i.picsum.photos/id/203/100/100.jpg',
         },
-        '226tfbci8': {   
+        {   
+            id: '226tfbci8',
             option1: 'Be a Shirt',
             option2: 'Be a Pant',
             option1VotedUsers: [],
             option2VotedUsers: ['Austin'],
+            author: 'Cena',
+            authorProfile: 'https://i.picsum.photos/id/204/100/100.jpg',
         },
-        'jrhp9txwh': {   
+        {  
+            id: 'jrhp9txwh', 
             option1: 'Be a Bacteria',
             option2: 'Be a Virus',
-            option1VotedUsers: ['Rock'],
-            option2VotedUsers: ['Undertaker', 'Austin'],
+            option1VotedUsers: ['Rock', 'Cena'],
+            option2VotedUsers: ['Undertaker'],
+            author: 'Cena',
+            authorProfile: 'https://i.picsum.photos/id/204/100/100.jpg',
         },
-    }
+    ]
 };
 
 export default function reducer(
@@ -62,16 +76,26 @@ export default function reducer(
     switch (action.type) {
         case SAVE_ANSWER: {
             const username = action.result.username;
-            let questions = {...state.questions};
-            let question = questions[action.result.id];
+            let questions = [...state.questions];
+            let question = questions.find(q => q.id === action.result.id);
+
+            if(!question)
+                return {...state};
+
+            //Blindly remove username from both arrays if present
+            {
+                const index = question.option1VotedUsers.indexOf(username);
+                if (index !== -1) question.option1VotedUsers.splice(index, 1);    
+            }
+            {
+                const index = question.option2VotedUsers.indexOf(username);
+                if (index !== -1) question.option2VotedUsers.splice(index, 1);    
+            }
+
             if(action.result.selectedOption === 1) {
-                if(!question.option1VotedUsers.includes(username)) {
-                    question.option1VotedUsers.push(username);
-                }
+                question.option1VotedUsers.push(username);
             } else {
-                if(!question.option2VotedUsers.includes(username)) {
-                    question.option2VotedUsers.push(username);
-                }
+                question.option2VotedUsers.push(username);
             }
             return {
                 ...state,
@@ -80,15 +104,17 @@ export default function reducer(
         }
 
         case SAVE_NEW_QUESTION: {
-            const id = Math.random().toString(36).substr(2, 9);
             const question = { 
+                id: action.result.id,
                 option1: action.result.option1,
                 option2: action.result.option2,
                 option1VotedUsers: [],
                 option2VotedUsers: [],
+                author: action.result.author,
+                authorProfile: action.result.authorProfile,
             }
-            let questions = {...state.questions};
-            questions[id] = question;
+            let questions = [...state.questions];
+            questions.push(question);
             return {
                 ...state,
                 questions,

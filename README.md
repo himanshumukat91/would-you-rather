@@ -1,12 +1,10 @@
 # WOULD YOU RATHER
-
 This is a project done for Udacity React Nano Degree mentor/reviewer certification 
 
 
 ## Installing the app
 Go to the root folder of the app and run:
 ### `npm install`
-
 
 ## Running the app
 Go to the root folder of the app and run:
@@ -15,7 +13,6 @@ Go to the root folder of the app and run:
 Runs the app in the development mode.<br>
 A new browser window should automatically open displaying the app.  
 If it doesn't, navigate to [http://localhost:3000/](http://localhost:3000/) in your browser
-
 
 ## App folder structure
 
@@ -29,4 +26,14 @@ If it doesn't, navigate to [http://localhost:3000/](http://localhost:3000/) in y
     │   └── components          # React UI components of the app
     └── README.md               # this file, instructions for building/using the app
 
+- This app is developed using mobile view first approach. So the same web app should work 
+smoothly on mobile. Through testing is pending though.
+- Using Material-UI for this app is an overkill but was done to ease UI development.
+
 Note: This project was created using [Create React App](https://www.npmjs.com/package/create-react-app).
+
+## Things to do
+- Include SASS and convert all component level css files to scss
+- Read init time data from a json file and then push to corresponding redux states or 
+  Use a backend server API to store User data/posted questions
+- Test for different display dimensions

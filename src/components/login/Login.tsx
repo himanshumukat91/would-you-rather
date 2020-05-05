@@ -9,12 +9,13 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import './Login.css';
 
-import { setCurrentUser } from '../../actions/user';
+import { setCurrentUser } from '../../actions/users';
 
 interface Props {
     users: any[];
     setCurrentUser: Function;
     history: any;
+    location: any;
 };
 
 interface State {
@@ -37,11 +38,11 @@ class Login extends PureComponent<Props, State> {
     }
 
     login = () => {
-        const { history } = this.props;
+        const { history, location } = this.props;
         const { selectedUser } = this.state;
         if(selectedUser){
             this.props.setCurrentUser(selectedUser);
-            history.push('/');
+            history.push(location.pathname);
         }
     }
 
@@ -49,9 +50,10 @@ class Login extends PureComponent<Props, State> {
         const { users } = this.props;
         const { selectedUser } = this.state;
         const usernames = Object.keys(users);
+
         return (
             <div className='loginContainer'>
-                <Typography variant="h5">
+                <Typography variant="h5" className='loginHeading'>
                     TELL US WHO YOU ARE
                 </Typography>
                 <FormControl className='loginSelect'>
