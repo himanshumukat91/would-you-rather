@@ -1,11 +1,24 @@
-import { SET_CURRENT_USER, QUESTION_POSTED, ANSWER_POSTED } from '../actions/users';
+import { 
+    GET_USERS_SUCCESS, 
+    SET_CURRENT_USER, 
+    POST_ANSWER_SUCCESS,
+    POST_QUESTION_SUCCESS
+} from '../actions/users';
 
-interface userDetails {
-    profile: string;
-    questionsAnswered: number;
-    questionsPosted: number;
-    answeredQuestionIds: string[];
-    postedQuestionIds: string[];
+
+interface answerMap {
+    [key: string]: string
+}
+
+interface UserDetails {
+    id: string,
+    name: string,
+    avatarURL: string,
+    answers: answerMap,
+    questions: string[]
+}
+interface UserDetailsProps {
+    [key: string]: UserDetails
 }
 
 interface Action {
@@ -13,53 +26,14 @@ interface Action {
   result?: any;
 };
 
-interface UserDetailsProps {
-    [key: string]: userDetails
-}
 interface InitialState {
     currentUser: any;
-    users: UserDetailsProps
+    users: UserDetailsProps;
 };
 
 const initialState: InitialState = {
     currentUser: null,
-    users: {
-        'Undertaker': {
-            profile: 'https://i.picsum.photos/id/201/100/100.jpg',
-            questionsAnswered: 2,
-            questionsPosted: 1,
-            answeredQuestionIds: ['4qbl54shl', '2psqkh63k', 'jrhp9txwh'],
-            postedQuestionIds: ['4qbl54shl'],
-        },
-        'Brock': {
-            profile: 'https://i.picsum.photos/id/202/100/100.jpg',
-            questionsAnswered: 3,
-            questionsPosted: 1,
-            answeredQuestionIds: ['4qbl54shl', '5l584cwfu', '2psqkh63k'],
-            postedQuestionIds: ['5l584cwfu'],
-        },
-        'Austin': {
-            profile: 'https://i.picsum.photos/id/203/100/100.jpg',
-            questionsAnswered: 2,
-            questionsPosted: 1,
-            answeredQuestionIds: ['2psqkh63k', '226tfbci8'],
-            postedQuestionIds: ['2psqkh63k'],
-        },
-        'Cena': {
-            profile: 'https://i.picsum.photos/id/204/100/100.jpg',
-            questionsAnswered: 3,
-            questionsPosted: 2,
-            answeredQuestionIds: ['4qbl54shl', '5l584cwfu', 'jrhp9txwh'],
-            postedQuestionIds: ['226tfbci8', 'jrhp9txwh'],
-        },
-        'Rock': {
-            profile: 'https://i.picsum.photos/id/301/100/100.jpg',
-            questionsAnswered: 2,
-            questionsPosted: 0,
-            answeredQuestionIds: ['5l584cwfu', 'jrhp9txwh'],
-            postedQuestionIds: [],
-        }
-    }
+    users: {}
 };
 
 export default function reducer(
@@ -67,36 +41,35 @@ export default function reducer(
     action: Action = {}
   ): InitialState {
     switch (action.type) {
-      case SET_CURRENT_USER:
-        return {
+        case GET_USERS_SUCCESS:
+            return {
+                ...state,
+                users: action.result,
+            }
+        case SET_CURRENT_USER:
+            return {
           ...state,
           currentUser: action.result,
         }; 
-        case QUESTION_POSTED: {
-            let users = {...state.users};
-            let userDetails = users[action.result.username];
-            const questionId = action.result.questionId;
-            if(!userDetails.postedQuestionIds.includes(questionId)) {
-                userDetails.questionsPosted++;
-                userDetails.postedQuestionIds.push(questionId);
-            }
+        case POST_ANSWER_SUCCESS:{
+            const data = action.result;
+            let users = {...state.users}; //To keep it pure
+            let userDetails = users[data.authedUser];
+            userDetails.answers[data.qid] = data.answer;
             return {
                 ...state,
-                users,
-            }; 
+                users
+            }
         }
-        case ANSWER_POSTED: {
-            let users = {...state.users};
-            let userDetails = users[action.result.username];
-            const questionId = action.result.questionId;
-            if(!userDetails.answeredQuestionIds.includes(questionId)) {
-                userDetails.questionsAnswered++;
-                userDetails.answeredQuestionIds.push(questionId);
-            }
+        case POST_QUESTION_SUCCESS:{
+            const newQuestion = action.result;
+            let users = {...state.users}; //To keep it pure
+            let userDetails = users[newQuestion.author];
+            userDetails.questions.push(newQuestion.id);
             return {
                 ...state,
-                users,
-            }; 
+                users
+            }
         }
         default:
             return state;

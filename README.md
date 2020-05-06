@@ -23,6 +23,7 @@ If it doesn't, navigate to [http://localhost:3000/](http://localhost:3000/) in y
     │   ├── actions             # Redux actions of the app
     │   ├── assets              # to store icons, images etc used in app
     │   ├── redux               # Reducer and store of the app
+    │   ├── utils               # Dataserver file (for now just data json with dummy APIs)
     │   └── components          # React UI components of the app
     └── README.md               # this file, instructions for building/using the app
 
@@ -34,6 +35,5 @@ Note: This project was created using [Create React App](https://www.npmjs.com/pa
 
 ## Things to do
 - Include SASS and convert all component level css files to scss
-- Read init time data from a json file and then push to corresponding redux states or 
-  Use a backend server API to store User data/posted questions
+- Collate all interfaces to one file and expose
 - Test for different display dimensions

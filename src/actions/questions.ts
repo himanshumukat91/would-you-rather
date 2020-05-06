@@ -1,5 +1,15 @@
+export const GET_QUESTIONS = 'GET_QUESTIONS';
+export const GET_QUESTIONS_SUCCESS = 'GET_QUESTIONS_SUCCESS';
 export const SAVE_ANSWER = 'SAVE_ANSWER';
-export const SAVE_NEW_QUESTION = 'SAVE_NEW_QUESTION';
+export const SAVE_ANSWER_SUCCESS = 'SAVE_ANSWER_SUCCESS';
+export const SAVE_QUESTION = 'SAVE_QUESTION';
+export const SAVE_QUESTION_SUCCESS = 'SAVE_QUESTION_SUCCESS';
+
+export function getQuestions(){
+  return {
+    type: GET_QUESTIONS,
+  }
+}
 
 export function saveAnswer(answer:any){
   return {
@@ -10,7 +20,7 @@ export function saveAnswer(answer:any){
 
 export function saveQuestion(question:any){
   return {
-    type: SAVE_NEW_QUESTION,
+    type: SAVE_QUESTION,
     result: question
   }
 }

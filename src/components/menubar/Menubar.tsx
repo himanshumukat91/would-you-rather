@@ -57,7 +57,7 @@ class Home extends PureComponent<Props, State> {
                             <AssessmentIcon />
                         </IconButton>
                     </Link>
-                    <img src={userDetails.profile} alt={userDetails.name} className={`menuUserProfile menuIcon`} />
+                    <img src={userDetails.avatarURL} alt={userDetails.name} className={`menuUserProfile menuIcon`} />
                     <Typography variant="subtitle2">
                         {currentUser}
                     </Typography>

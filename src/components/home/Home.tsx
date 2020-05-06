@@ -10,19 +10,25 @@ import Typography from '@material-ui/core/Typography';
 import QuestionCard from '../questionCard/QuestionCard';
 import './Home.css';
 
+interface optionDetails {
+    votes: string[],
+    text: string,
+}
 interface questionDetails {
-    id: string;
-    option1: string;
-    option2: string;
-    option1VotedUsers: string[];
-    option2VotedUsers: string[];
-    author: string;
-    authorProfile: string;
+    id: string,
+    author: string,
+    timestamp: number,
+    optionOne: optionDetails,
+    optionTwo: optionDetails
+}
+
+interface questionProps {
+    [key: string]: questionDetails
 }
 
 interface Props {
     currentUser: string;
-    questions: questionDetails[];
+    questions: questionProps;
     users: any;
 };
 
@@ -45,22 +51,25 @@ class Home extends PureComponent<Props, State> {
     };
 
     render() {
-        const { currentUser, questions } = this.props;
+        const { currentUser, users, questions } = this.props;
         const { questionType } = this.state;
-        const sortedQuestions = [...questions].reverse();
+        const userDetails = users[currentUser];
+
+        const questionArray = Object.values(questions);
+        const sortedQuestions = questionArray.sort((a,b) => (
+            b.timestamp - a.timestamp
+        ));
         const filterQuestions = sortedQuestions.filter(question => {
-
-            let selectedOption = 0;
-            if(question.option1VotedUsers.includes(currentUser)) {
-                selectedOption = 1;
-            } else if(question.option2VotedUsers.includes(currentUser)) {
-                selectedOption = 2;
-            }
+            const selectedOption = userDetails.answers[question.id];
             // show according to the question type selected
-            if(questionType === 'Unanswered' && selectedOption) return false;
-            else if(questionType === 'Answered' && !selectedOption) return false;
-
-            return true;
+            if(questionType === 'Unanswered' && selectedOption) {
+                return false;  
+            } 
+            else if(questionType === 'Answered' && !selectedOption) {
+                return false;
+            } else {
+                return true;
+            }
         });
 
         return (
@@ -73,7 +82,6 @@ class Home extends PureComponent<Props, State> {
                                 <QuestionCard
                                     questionDetails={question}
                                     currentUser={currentUser}
-                                    questionType={questionType}
                                     postAnswer={() => {}}
                                     detailedView={false} />
                             </Link>

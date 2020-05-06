@@ -4,23 +4,28 @@ import { connect } from 'react-redux';
 import QuestionCard from '../questionCard/QuestionCard';
 import './Questions.css';
 
-import { postAnswer } from '../../actions/users';
 import { saveAnswer } from '../../actions/questions';
 
-interface questionDetails {
-    id: string;
-    option1: string;
-    option2: string;
-    option1VotedUsers: string[];
-    option2VotedUsers: string[];
-    author: string;
-    authorProfile: string;
+
+interface optionDetails {
+    votes: string[],
+    text: string,
 }
 
+interface questionDetails {
+    id: string,
+    author: string,
+    timestamp: number,
+    optionOne: optionDetails,
+    optionTwo: optionDetails
+}
+
+interface questionProps {
+    [key: string]: questionDetails
+}
 interface Props {
     currentUser: string;
-    questions: questionDetails[];
-    postAnswer: Function;
+    questions: questionProps;
     saveAnswer: Function;
     match: any;
     users: any;
@@ -36,27 +41,26 @@ class Questions extends PureComponent<Props, State> {
         this.state = {
             question: {
                 id: '',
-                option1: '',
-                option2: '',
-                option1VotedUsers: [],
-                option2VotedUsers: [],
                 author: '',
-                authorProfile: '',
-            }
+                timestamp: 0,
+                optionOne: {
+                    votes: [],
+                    text: '',
+                },
+                optionTwo: {
+                    votes: [],
+                    text: '',
+                }}
         }
     }
 
     postAnswer = (id: string, option: string) => {
-        const {currentUser, saveAnswer, postAnswer} = this.props;
+        const {currentUser, saveAnswer} = this.props;
         
         saveAnswer({
-            username: currentUser,
-            id,
-            selectedOption: Number(option)
-        });
-        postAnswer({
-            username: currentUser,
-            questionId: id,
+            authedUser: currentUser,
+            qid: id,
+            answer: option
         });
     }
 
@@ -64,7 +68,7 @@ class Questions extends PureComponent<Props, State> {
         const { match, questions } = this.props;
         let question = null;
         if(match?.params?.questionId) {
-            question = questions.find(q => q.id === match.params.questionId);
+            question = questions[match.params.questionId];
             question && this.setState({question});
         }
     }
@@ -80,7 +84,6 @@ class Questions extends PureComponent<Props, State> {
                 <QuestionCard
                     questionDetails={question}
                     currentUser={currentUser}
-                    questionType={'All'}
                     postAnswer={this.postAnswer}
                     detailedView={true} />
             </div>
@@ -95,7 +98,6 @@ export default connect(
         questions: state.questions.questions,
     }),
     {
-        postAnswer,
         saveAnswer,
     },
 )(Questions);

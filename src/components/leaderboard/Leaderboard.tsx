@@ -7,18 +7,33 @@ import Typography from '@material-ui/core/Typography';
 
 import './Leaderboard.css';
 
+interface answerMap {
+    [key: string]: string
+}
+
+interface UserDetails {
+    id: string,
+    name: string,
+    avatarURL: string,
+    answers: answerMap,
+    questions: string[]
+}
+
+interface UserDetailsProps {
+    [key: string]: UserDetails
+}
+
 interface leaderDetails {
-    name: string;
-    profile: string;
-    questionsAnswered: number;
-    questionsPosted: number;
-    answeredQuestionIds: string[];
-    postedQuestionIds: string[];
+    id: string,
+    name: string,
+    avatarURL: string,
+    answersPosted: number,
+    questionsPosted: number
 }
 
 interface Props {
     currentUser: string;
-    users: any;
+    users: UserDetailsProps;
 };
 
 interface State {
@@ -38,12 +53,19 @@ class Leaderboard extends PureComponent<Props, State> {
         const usernames = Object.keys(users);
 
         let leaderboard = usernames.map(name => {
-            return {name, ...users[name]}
+            const userDetails = users[name];
+            return {    
+                id: userDetails.id,
+                name: userDetails.name,
+                avatarURL: userDetails.avatarURL,
+                answersPosted: Object.keys(userDetails.answers).length,
+                questionsPosted: userDetails.questions.length,
+            }
         });
 
         leaderboard.sort(function(l1, l2){return (
-            (l2.questionsAnswered + l2.questionsPosted) - 
-            (l1.questionsAnswered + l1.questionsPosted)
+            (l2.answersPosted + l2.questionsPosted) - 
+            (l1.answersPosted + l1.questionsPosted)
         )});
 
         this.setState({leaderboard});
@@ -58,7 +80,7 @@ class Leaderboard extends PureComponent<Props, State> {
                     <Card key={leader.name} className='leaderCard'>
                         <CardContent>
                             <div className='leaderContent'>
-                                <img src={leader.profile} alt={leader.name} />
+                                <img src={leader.avatarURL} alt={leader.name} />
                                 <div className='leaderDetails'>
                                     <Typography variant="h6">
                                         {leader.name}
@@ -67,7 +89,7 @@ class Leaderboard extends PureComponent<Props, State> {
                                         {`Questions Asked:    ${leader.questionsPosted}`}
                                     </Typography>
                                     <Typography color="textSecondary">
-                                        {`Questions Answered: ${leader.questionsAnswered}`}
+                                        {`Questions Answered: ${leader.answersPosted}`}
                                     </Typography>
                                 </div>
                             </div>

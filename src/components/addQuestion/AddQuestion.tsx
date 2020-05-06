@@ -9,66 +9,57 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import './AddQuestion.css';
 
-import { postQuestion } from '../../actions/users';
 import { saveQuestion } from '../../actions/questions';
 
 interface Props {
     currentUser: string;
     users: any;
-    postQuestion: Function;
     saveQuestion: Function;
     history: any;
 };
 
 interface State {
-    option1: string;
-    option2: string;
+    optionOneText: string;
+    optionTwoText: string;
 };
 
 class AddQuestion extends PureComponent<Props, State> {
     constructor(props:Props) {
         super(props);
         this.state = {
-            option1: '11',
-            option2: '22',
+            optionOneText: '',
+            optionTwoText: '',
         }
     }
 
     postQuestion = () => {
-        const {currentUser, users, saveQuestion, postQuestion, history} = this.props;
-        const {option1, option2} = this.state;
+        const {currentUser, users, saveQuestion, history} = this.props;
+        const {optionOneText, optionTwoText} = this.state;
         const userDetails = users[currentUser];
-        const id = Math.random().toString(36).substr(2, 9);
 
         if(!userDetails) return;
 
         saveQuestion({
-            id,
-            option1,
-            option2,
             author: currentUser,
-            authorProfile: userDetails.profile,
-        });
-        postQuestion({
-            username: currentUser,
-            questionId: id,
+            optionOneText,
+            optionTwoText,
         });
         history.push("/");
     }
 
     handleChange = (option: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
-        let { option1, option2 } = this.state;
+        let { optionOneText, optionTwoText } = this.state;
         
         if(option === 1)
-            option1 = event.target.value;
+            optionOneText = event.target.value;
         else if(option === 2)
-            option2 = event.target.value;
+            optionTwoText = event.target.value;
 
-        this.setState({option1, option2});
+        this.setState({optionOneText, optionTwoText});
     };
 
     render() {
-        const { option1, option2 } = this.state;
+        const { optionOneText, optionTwoText } = this.state;
         
         return (
             <Card className='addCard'>
@@ -81,7 +72,7 @@ class AddQuestion extends PureComponent<Props, State> {
                             id="outlined-name"
                             label="Option 1"
                             className='option'
-                            value={option1}
+                            value={optionOneText}
                             onChange={this.handleChange(1)}
                             margin="normal"
                             variant="outlined"
@@ -90,7 +81,7 @@ class AddQuestion extends PureComponent<Props, State> {
                             id="outlined-name"
                             label="Option 2"
                             className='option'
-                            value={option2}
+                            value={optionTwoText}
                             onChange={this.handleChange(2)}
                             margin="normal"
                             variant="outlined"
@@ -114,7 +105,6 @@ export default connect(
         users: state.user.users,
     }),
     {
-        postQuestion,
         saveQuestion,
     },
 )(AddQuestion);
