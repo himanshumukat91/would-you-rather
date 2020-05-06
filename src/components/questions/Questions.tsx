@@ -4,24 +4,11 @@ import { connect } from 'react-redux';
 import QuestionCard from '../questionCard/QuestionCard';
 import './Questions.css';
 
+import {QuestionDetails} from '../../interfaces/questionInterface';
 import { saveAnswer } from '../../actions/questions';
 
-
-interface optionDetails {
-    votes: string[],
-    text: string,
-}
-
-interface questionDetails {
-    id: string,
-    author: string,
-    timestamp: number,
-    optionOne: optionDetails,
-    optionTwo: optionDetails
-}
-
 interface questionProps {
-    [key: string]: questionDetails
+    [key: string]: QuestionDetails
 }
 interface Props {
     currentUser: string;
@@ -32,7 +19,7 @@ interface Props {
 };
 
 interface State {
-    question: questionDetails;
+    question: QuestionDetails;
 };
 
 class Questions extends PureComponent<Props, State> {

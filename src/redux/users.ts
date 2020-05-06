@@ -4,19 +4,8 @@ import {
     POST_ANSWER_SUCCESS,
     POST_QUESTION_SUCCESS
 } from '../actions/users';
+import {UserDetails} from '../interfaces/userInterface';
 
-
-interface answerMap {
-    [key: string]: string
-}
-
-interface UserDetails {
-    id: string,
-    name: string,
-    avatarURL: string,
-    answers: answerMap,
-    questions: string[]
-}
 interface UserDetailsProps {
     [key: string]: UserDetails
 }

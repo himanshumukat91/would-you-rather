@@ -6,18 +6,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 
 import './Leaderboard.css';
-
-interface answerMap {
-    [key: string]: string
-}
-
-interface UserDetails {
-    id: string,
-    name: string,
-    avatarURL: string,
-    answers: answerMap,
-    questions: string[]
-}
+import {UserDetails} from '../../interfaces/userInterface';
 
 interface UserDetailsProps {
     [key: string]: UserDetails

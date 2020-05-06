@@ -11,21 +11,10 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Typography from '@material-ui/core/Typography';
 import './QuestionCard.css';
 
-interface optionDetails {
-    votes: string[],
-    text: string,
-}
-
-interface questionDetails {
-    id: string,
-    author: string,
-    timestamp: number,
-    optionOne: optionDetails,
-    optionTwo: optionDetails
-}
+import {QuestionDetails} from '../../interfaces/questionInterface';
 
 interface Props { 
-    questionDetails: questionDetails,
+    questionDetails: QuestionDetails,
     currentUser: string,
     postAnswer: Function,
     detailedView: boolean,
@@ -33,7 +22,7 @@ interface Props {
 }
 
 interface State {
-    question: questionDetails;
+    question: QuestionDetails;
 };
 
 class QuestionCard extends PureComponent<Props, State> {

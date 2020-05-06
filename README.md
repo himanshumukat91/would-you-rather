@@ -35,5 +35,4 @@ Note: This project was created using [Create React App](https://www.npmjs.com/pa
 
 ## Things to do
 - Include SASS and convert all component level css files to scss
-- Collate all interfaces to one file and expose
 - Test for different display dimensions

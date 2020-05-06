@@ -3,21 +3,10 @@ import {
     SAVE_ANSWER_SUCCESS, 
     SAVE_QUESTION_SUCCESS
 } from '../actions/questions';
-
-interface optionDetails {
-    votes: string[],
-    text: string,
-}
-interface questionDetails {
-    id: string,
-    author: string,
-    timestamp: number,
-    optionOne: optionDetails,
-    optionTwo: optionDetails
-}
+import {QuestionDetails} from '../interfaces/questionInterface';
 
 interface questionDeialsProps {
-    [key: string]: questionDetails
+    [key: string]: QuestionDetails
 }
 interface Action {
   type?: string;

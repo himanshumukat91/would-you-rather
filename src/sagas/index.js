@@ -17,7 +17,7 @@ function* getQuestions() {
 
 function* saveAnswer(action) {
     const result = action.result;
-    const resp = yield call(_saveQuestionAnswer, result);    
+    yield call(_saveQuestionAnswer, result);    
     yield put({ type: "SAVE_ANSWER_SUCCESS", result });   
     yield put({ type: "POST_ANSWER_SUCCESS", result });
 }

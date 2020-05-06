@@ -9,21 +9,10 @@ import FormControl from '@material-ui/core/FormControl';
 import Typography from '@material-ui/core/Typography';
 import QuestionCard from '../questionCard/QuestionCard';
 import './Home.css';
-
-interface optionDetails {
-    votes: string[],
-    text: string,
-}
-interface questionDetails {
-    id: string,
-    author: string,
-    timestamp: number,
-    optionOne: optionDetails,
-    optionTwo: optionDetails
-}
+import {QuestionDetails} from '../../interfaces/questionInterface';
 
 interface questionProps {
-    [key: string]: questionDetails
+    [key: string]: QuestionDetails
 }
 
 interface Props {
