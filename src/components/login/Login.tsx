@@ -12,7 +12,7 @@ import './Login.css';
 import { setCurrentUser } from '../../actions/users';
 
 interface Props {
-    users: any[];
+    users: any;
     setCurrentUser: Function;
     history: any;
     location: any;
@@ -66,7 +66,7 @@ class Login extends PureComponent<Props, State> {
                     >   
                         {(usernames || []).map(username => (
                             <MenuItem key={username} value={username}>
-                                {username}
+                                {users[username].name}
                             </MenuItem>
                         ))}
                     </Select>

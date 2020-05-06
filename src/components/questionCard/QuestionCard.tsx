@@ -45,7 +45,7 @@ class QuestionCard extends PureComponent<Props, State> {
         const option2String = 
             `(${option2Votes}, ${Math.round((option2Votes/totalVotes)*100)}%)`;
     
-        let selectedOption = currUserDetails.answers[questionDetails.id];
+        let selectedOption = currUserDetails.answers[questionDetails.id] || '';
     
         const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
             postAnswer(questionDetails.id, event.target.value);

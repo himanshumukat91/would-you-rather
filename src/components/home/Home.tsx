@@ -9,16 +9,12 @@ import FormControl from '@material-ui/core/FormControl';
 import Typography from '@material-ui/core/Typography';
 import QuestionCard from '../questionCard/QuestionCard';
 import './Home.css';
-import {QuestionDetails} from '../../interfaces/questionInterface';
 
-interface questionProps {
-    [key: string]: QuestionDetails
-}
+import { UserDetails } from '../../interfaces/userInterface';
 
 interface Props {
-    currentUser: string;
-    questions: questionProps;
-    users: any;
+    questionArray: any[];
+    userDetails: UserDetails;
 };
 
 interface State {
@@ -40,11 +36,9 @@ class Home extends PureComponent<Props, State> {
     };
 
     render() {
-        const { currentUser, users, questions } = this.props;
+        const { userDetails, questionArray } = this.props;
         const { questionType } = this.state;
-        const userDetails = users[currentUser];
 
-        const questionArray = Object.values(questions);
         const sortedQuestions = questionArray.sort((a,b) => (
             b.timestamp - a.timestamp
         ));
@@ -66,11 +60,11 @@ class Home extends PureComponent<Props, State> {
                 <div className='questionContainer'>
                     {filterQuestions.length
                     ?filterQuestions.map((question: any) => (
-                        <div className='questionCard'>
+                        <div key={question.id} className='questionCard'>
                             <Link to={`/questions/${question.id}`} className='noTextDecoration'>
                                 <QuestionCard
                                     questionDetails={question}
-                                    currentUser={currentUser}
+                                    currentUser={userDetails.id}
                                     postAnswer={() => {}}
                                     detailedView={false} />
                             </Link>
@@ -96,9 +90,8 @@ class Home extends PureComponent<Props, State> {
 
 export default connect(
     (state: any) => ({
-        currentUser: state.user.currentUser,
-        users: state.user.users,
-        questions: state.questions.questions,
+        questionArray: Object.values(state.questions.questions),
+        userDetails: state.user.users[state.user.currentUser],
     }),
     {
     },

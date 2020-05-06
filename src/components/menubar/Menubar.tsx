@@ -12,12 +12,12 @@ import AssessmentIcon from '@material-ui/icons/Assessment';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import './Menubar.css';
 
-import { setCurrentUser, } from '../../actions/users';
+import { setCurrentUser } from '../../actions/users';
+import { UserDetails } from '../../interfaces/userInterface';
 
 interface Props {
-    currentUser: string;
+    userDetails: UserDetails;
     setCurrentUser: Function;
-    users: any;
 };
 
 interface State {
@@ -31,10 +31,7 @@ class Home extends PureComponent<Props, State> {
     }
 
     render() {
-        const { setCurrentUser, currentUser, users } = this.props;
-        const userDetails = users[currentUser];
-
-        if(!userDetails) return null;
+        const { setCurrentUser, userDetails } = this.props;
 
         return (
             <AppBar position="static">
@@ -59,9 +56,11 @@ class Home extends PureComponent<Props, State> {
                             <AssessmentIcon />
                         </IconButton>
                     </Link>
-                    <img src={userDetails.avatarURL} alt={userDetails.name} className={`menuUserProfile menuIcon`} />
+                    <img src={userDetails?userDetails.avatarURL:''} 
+                        alt={userDetails?userDetails.name:''} 
+                        className={`menuUserProfile menuIcon`} />
                     <Typography variant="subtitle2">
-                        {currentUser}
+                        {userDetails?userDetails.name:'Login'}
                     </Typography>
                     <Button color="inherit" className='menuLogout'
                         onClick={() => setCurrentUser('')}>
@@ -75,8 +74,7 @@ class Home extends PureComponent<Props, State> {
 
 export default connect(
     (state: any) => ({
-        currentUser: state.user.currentUser,
-        users: state.user.users,
+        userDetails: state.user.users[state.user.currentUser],
     }),
     {
         setCurrentUser,

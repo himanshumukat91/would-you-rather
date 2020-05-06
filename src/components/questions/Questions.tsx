@@ -2,42 +2,31 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 
 import QuestionCard from '../questionCard/QuestionCard';
+import NoMatch from '../noMatch/NoMatch';
 import './Questions.css';
 
 import {QuestionDetails} from '../../interfaces/questionInterface';
 import { saveAnswer } from '../../actions/questions';
 
-interface questionProps {
+interface QuestionProps {
     [key: string]: QuestionDetails
 }
 interface Props {
     currentUser: string;
-    questions: questionProps;
+    questions: QuestionProps;
     saveAnswer: Function;
     match: any;
-    users: any;
 };
 
 interface State {
-    question: QuestionDetails;
+    question: any;
 };
 
 class Questions extends PureComponent<Props, State> {
     constructor(props:Props) {
         super(props);
         this.state = {
-            question: {
-                id: '',
-                author: '',
-                timestamp: 0,
-                optionOne: {
-                    votes: [],
-                    text: '',
-                },
-                optionTwo: {
-                    votes: [],
-                    text: '',
-                }}
+            question: {}
         }
     }
 
@@ -64,7 +53,7 @@ class Questions extends PureComponent<Props, State> {
         const { currentUser } = this.props;
         const { question } = this.state;
 
-        if(!question?.id) return null;
+        if(!question?.id) return <NoMatch />;
 
         return (
             <div className='questionsContainer'>
@@ -81,7 +70,6 @@ class Questions extends PureComponent<Props, State> {
 export default connect(
     (state: any) => ({
         currentUser: state.user.currentUser,
-        users: state.user.users,
         questions: state.questions.questions,
     }),
     {

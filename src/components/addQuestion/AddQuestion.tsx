@@ -10,12 +10,12 @@ import Button from '@material-ui/core/Button';
 import './AddQuestion.css';
 
 import { saveQuestion } from '../../actions/questions';
+import { UserDetails } from '../../interfaces/userInterface';
 
 interface Props {
-    currentUser: string;
-    users: any;
     saveQuestion: Function;
     history: any;
+    userDetails: UserDetails;
 };
 
 interface State {
@@ -33,14 +33,13 @@ class AddQuestion extends PureComponent<Props, State> {
     }
 
     postQuestion = () => {
-        const {currentUser, users, saveQuestion, history} = this.props;
+        const {userDetails, saveQuestion, history} = this.props;
         const {optionOneText, optionTwoText} = this.state;
-        const userDetails = users[currentUser];
 
         if(!userDetails) return;
 
         saveQuestion({
-            author: currentUser,
+            author: userDetails.id,
             optionOneText,
             optionTwoText,
         });
@@ -101,8 +100,7 @@ class AddQuestion extends PureComponent<Props, State> {
 
 export default connect(
     (state: any) => ({
-        currentUser: state.user.currentUser,
-        users: state.user.users,
+        userDetails: state.user.users[state.user.currentUser],
     }),
     {
         saveQuestion,
