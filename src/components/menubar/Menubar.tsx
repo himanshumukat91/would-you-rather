@@ -39,7 +39,7 @@ class Home extends PureComponent<Props, State> {
         return (
             <AppBar position="static">
                 <Toolbar>
-                    <Link to={`/`} className={`noTextDecoration menuIcon menuIconHome`}>
+                    <Link to={`/`} className={`noTextDecoration menuIcon menuIconHome`} title='Home'>
                         <IconButton edge="start" color="inherit" aria-label="menu">
                             <HomeIcon />
                         </IconButton>
@@ -48,12 +48,14 @@ class Home extends PureComponent<Props, State> {
                         </Typography>
                     </Link>
                     <Link to={`/add`} className={`noTextDecoration menuIcon menuIconAdd`}>
-                        <IconButton edge="start" color="inherit" aria-label="leaderboard">
+                        <IconButton edge="start" color="inherit" aria-label="leaderboard" 
+                            title='New Question'>
                             <AddCircleIcon />
                         </IconButton>
                     </Link>
                     <Link to={`/leaderboard`} className={`noTextDecoration menuIcon`}>
-                        <IconButton edge="start" color="inherit" aria-label="leaderboard">
+                        <IconButton edge="start" color="inherit" aria-label="leaderboard"
+                            title='Leaderboard'>
                             <AssessmentIcon />
                         </IconButton>
                     </Link>
