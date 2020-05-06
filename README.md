@@ -24,6 +24,7 @@ If it doesn't, navigate to [http://localhost:3000/](http://localhost:3000/) in y
     │   ├── assets              # to store icons, images etc used in app
     │   ├── redux               # Reducer and store of the app
     │   ├── utils               # Dataserver file (for now just data json with dummy APIs)
+    │   ├── interfaces          # Interface files for commonly used app level interfaces
     │   └── components          # React UI components of the app
     └── README.md               # this file, instructions for building/using the app
 
